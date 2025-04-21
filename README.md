@@ -2,6 +2,8 @@
 
 SkillBridge est une plateforme de mentorat en ligne qui connecte des étudiants avec des professionnels pour des sessions de guidance, conseils de carrière et apprentissage personnalisé.
 
+(en cours de développement)
+
 ## 🔗 Fonctionnalités principales
 
 - Inscription & Authentification JWT
@@ -21,21 +23,116 @@ SkillBridge est une plateforme de mentorat en ligne qui connecte des étudiants 
 - PostgreSQL
 - Maven (multi-module : API / BLL / DAL / DL / IL)
 
-### Frontend (Angular 19)
-- Angular 19 Standalone Components
-- PrimeNG pour l’interface utilisateur
-- Angular Router, Reactive Forms, HttpClient
 
 ## 📦 Structure du projet
 
 ```
-skillbridge/
-├── api/         → Contrôleurs, gestion des endpoints REST
-├── bll/         → Services métiers
-├── dal/         → Interfaces repository
-├── dl/          → Entités JPA & Enums
-├── il/          → Configurations (JWT, Spring Security)
-└── frontend/    → Application Angular standalone (src/app/)
+├───.idea
+├───api
+│   ├───.mvn
+│   │   └───wrapper
+│   └───src
+│       ├───main
+│       │   ├───java
+│       │   │   └───org
+│       │   │       └───seba
+│       │   │           └───api
+│       │   │               ├───controllers
+│       │   │               │   ├───advisor
+│       │   │               │   └───auth
+│       │   │               └───models
+│       │   │                   ├───availability
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   ├───mentor
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   ├───review
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   ├───security
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   ├───session
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   ├───skill
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   ├───student
+│       │   │                   │   ├───dtos
+│       │   │                   │   └───forms
+│       │   │                   └───user
+│       │   │                       ├───dtos
+│       │   │                       └───forms
+│       │   └───resources
+│       └───test
+│           └───java
+│               └───org
+│                   └───seba
+│                       └───api
+├───bll
+│   ├───.idea
+│   └───src
+│       └───main
+│           └───java
+│               └───org
+│                   └───seba
+│                       ├───exceptions
+│                       │   └───user
+│                       └───services
+│                           ├───availability
+│                           │   ├───impl
+│                           │   └───model
+│                           ├───mentor
+│                           │   ├───impl
+│                           │   └───model
+│                           ├───review
+│                           │   ├───impl
+│                           │   └───model
+│                           ├───security
+│                           │   └───impl
+│                           ├───session
+│                           │   ├───impl
+│                           │   └───model
+│                           ├───skill
+│                           │   └───impl
+│                           └───user
+│                               └───impl
+├───dal
+│   ├───.idea
+│   └───src
+│       └───main
+│           └───java
+│               └───org
+│                   └───seba
+│                       └───repositories
+│                           └───custom
+│                               └───impl
+├───dl
+│   ├───.idea
+│   └───src
+│       └───main
+│           └───java
+│               └───org
+│                   └───seba
+│                       ├───entities
+│                       │   └───base
+│                       └───enums
+└───il
+    ├───.idea
+    └───src
+        └───main
+            └───java
+                └───org
+                    └───seba
+                        ├───configs
+                        ├───filters
+                        ├───requests
+                        ├───specifications
+                        └───utils
+                            └───jwt
+
 ```
 
 ## 🚀 Lancer le projet localement
@@ -53,14 +150,6 @@ cd api
 ./mvnw spring-boot:run
 ```
 
-### Frontend
-```bash
-cd frontend
-npm install
-ng serve
-```
-
-Accède à l’app sur : `http://localhost:4200`
 
 ## 🔐 Comptes de démonstration
 
@@ -79,7 +168,7 @@ Le projet a été réalisé en **14 jours**, selon le plan suivant :
 
 ## 🧠 Auteur
 
-Développé par **[Ton nom ici]** dans le cadre du TFE 2025.
+Développé par Sebastien De Laet dans le cadre du TFE 2025.
 
 ## 📃 Licence
 
