@@ -52,7 +52,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.email;
     }
 
     @Override
