@@ -1,7 +1,7 @@
 package org.seba.api.models.security.dtos;
 
-import org.seba.entities.User;
-import org.seba.enums.UserRole;
+import org.seba.dl.entities.User;
+import org.seba.dl.enums.UserRole;
 
 public record UserSessionDTO(
         Long id,

@@ -1,8 +1,8 @@
 package org.seba.api.models.user.dtos;
 
-import org.seba.entities.User;
-import org.seba.enums.UserRole;
-import org.seba.enums.UserStatus;
+import org.seba.dl.entities.User;
+import org.seba.dl.enums.UserRole;
+import org.seba.dl.enums.UserStatus;
 
 public record UserDTO(
         Long id,

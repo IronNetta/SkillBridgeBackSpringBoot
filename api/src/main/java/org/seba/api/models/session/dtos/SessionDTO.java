@@ -1,6 +1,6 @@
 package org.seba.api.models.session.dtos;
 
-import org.seba.entities.Session;
+import org.seba.dl.entities.Session;
 
 import java.time.LocalDateTime;
 

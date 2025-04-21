@@ -2,8 +2,8 @@ package org.seba.api.models.security.forms;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.seba.entities.User;
-import org.seba.enums.UserRole;
+import org.seba.dl.entities.User;
+import org.seba.dl.enums.UserRole;
 
 public record RegisterForm(
         @NotBlank @Size(max = 50)
@@ -12,7 +12,7 @@ public record RegisterForm(
         String email,
         @NotBlank
         String password,
-        UserRole role // Ajout du rôle
+        UserRole role
 ) {
 
     public User toUser() {

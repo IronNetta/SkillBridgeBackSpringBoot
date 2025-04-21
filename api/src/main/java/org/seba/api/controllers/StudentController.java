@@ -2,8 +2,8 @@ package org.seba.api.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.seba.api.models.student.dtos.StudentDTO;
-import org.seba.entities.Student;
-import org.seba.services.user.UserService;
+import org.seba.dl.entities.Student;
+import org.seba.bll.services.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

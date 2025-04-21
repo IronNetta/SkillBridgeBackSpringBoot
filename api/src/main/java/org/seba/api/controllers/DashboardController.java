@@ -1,11 +1,11 @@
 package org.seba.api.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.seba.entities.Review;
-import org.seba.entities.User;
-import org.seba.services.review.ReviewService;
-import org.seba.services.session.SessionService;
-import org.seba.services.user.UserService;
+import org.seba.dl.entities.Review;
+import org.seba.dl.entities.User;
+import org.seba.bll.services.review.ReviewService;
+import org.seba.bll.services.session.SessionService;
+import org.seba.bll.services.user.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

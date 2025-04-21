@@ -1,6 +1,6 @@
 package org.seba.api.models.review.dtos;
 
-import org.seba.entities.Review;
+import org.seba.dl.entities.Review;
 
 public record ReviewDTO(Long id, int rating, String comment, Long mentorId, Long authorId) {
     public static ReviewDTO fromEntity(Review r) {

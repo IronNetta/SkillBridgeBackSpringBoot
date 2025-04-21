@@ -1,6 +1,6 @@
 package org.seba.api.models.availability.dtos;
 
-import org.seba.entities.Availability;
+import org.seba.dl.entities.Availability;
 
 import java.time.LocalDateTime;
 

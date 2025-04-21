@@ -1,6 +1,6 @@
 package org.seba.api.models.student.forms;
 
-import org.seba.entities.Student;
+import org.seba.dl.entities.Student;
 
 public record StudentForm(String username, String email, String password) {
     public Student toEntity() {

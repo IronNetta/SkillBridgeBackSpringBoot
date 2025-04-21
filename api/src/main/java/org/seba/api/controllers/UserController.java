@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.seba.api.models.CustomPage;
 import org.seba.api.models.security.dtos.UserSessionDTO;
 import org.seba.api.models.user.forms.UserForm;
-import org.seba.entities.User;
-import org.seba.requests.SearchParam;
-import org.seba.services.user.UserService;
+import org.seba.dl.entities.User;
+import org.seba.il.requests.SearchParam;
+import org.seba.bll.services.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@CrossOrigin("*")
 @Tag(name = "User", description = "Endpoints pour la gestion des utilisateurs")
 public class UserController {
 
@@ -48,7 +47,7 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{email}")
     public ResponseEntity<UserSessionDTO> getUserByEmail(@PathVariable String email) {
         User user = userService.getUserByEmail(email);
@@ -62,7 +61,7 @@ public class UserController {
         return ResponseEntity.ok(UserSessionDTO.fromUser(savedUser));
     }
 
-    @PreAuthorize("hasAuthority('STUDENT')")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{email}")
     public ResponseEntity<UserSessionDTO> updateUser(@PathVariable String email, @RequestBody UserForm user) {
         User updatedUser = userService.updateUser(user.toUser(), email);

@@ -1,6 +1,6 @@
 package org.seba.api.models.mentor.forms;
 
-import org.seba.entities.Mentor;
+import org.seba.dl.entities.Mentor;
 
 import java.util.List;
 

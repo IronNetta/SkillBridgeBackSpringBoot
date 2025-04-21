@@ -1,6 +1,6 @@
 package org.seba.api.models.student.dtos;
 
-import org.seba.entities.Student;
+import org.seba.dl.entities.Student;
 
 public record StudentDTO(Long id, String username, String email) {
     public static StudentDTO fromEntity(Student student) {
