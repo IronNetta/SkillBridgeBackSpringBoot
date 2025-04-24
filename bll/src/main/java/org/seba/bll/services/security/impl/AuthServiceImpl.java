@@ -1,5 +1,7 @@
 package org.seba.bll.services.security.impl;
 
+import org.seba.dl.entities.Mentor;
+import org.seba.dl.entities.Student;
 import org.seba.dl.entities.User;
 import org.seba.dl.enums.UserRole;
 import org.seba.bll.exceptions.user.BadCredentialsException;
@@ -24,21 +26,34 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(User user) {
-        if(userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserNotFoundException(HttpStatus.NOT_ACCEPTABLE, "Email already exists");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getRole() == null) {
-            user.setRole(UserRole.STUDENT);
-        } else {
-            if (user.getRole() != UserRole.STUDENT && user.getRole() != UserRole.MENTOR) {
-                user.setRole(UserRole.STUDENT);
-            }
+        // Si pas de rôle défini, on le force à STUDENT par défaut
+        UserRole role = user.getRole();
+        if (role == null || (role != UserRole.STUDENT && role != UserRole.MENTOR)) {
+            role = UserRole.STUDENT;
         }
 
-        userRepository.save(user);
+        // Instanciation correcte selon le rôle
+        User newUser;
+        if (role == UserRole.MENTOR) {
+            Mentor mentor = new Mentor();
+            mentor.setBio(""); // Optionnel, tu peux mettre un champ par défaut
+            newUser = mentor;
+        } else {
+            newUser = new Student();
+        }
+
+        newUser.setEmail(user.getEmail());
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        newUser.setRole(role);
+
+        userRepository.save(newUser);
     }
 
 

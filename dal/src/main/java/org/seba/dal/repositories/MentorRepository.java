@@ -2,6 +2,8 @@ package org.seba.dal.repositories;
 
 import org.seba.dl.entities.Mentor;
 import org.seba.dal.repositories.custom.MentorRepositoryCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +23,8 @@ public interface MentorRepository extends JpaRepository<Mentor, Long>, JpaSpecif
 
     @Query("SELECT AVG(r.rating) FROM Review r WHERE r.mentor.id = :mentorId")
     Double getAverageRatingByMentorId(@Param("mentorId") Long mentorId);
+
+    @Query("SELECT m FROM Mentor m WHERE m.createdAt IS NOT NULL")
+    Page<Mentor> findAllWithCreatedAt(Pageable pageable);
 }
 

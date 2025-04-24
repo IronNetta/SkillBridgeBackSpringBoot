@@ -28,7 +28,6 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                         "JOIN m.availabilities a WHERE 1=1 "
         );
 
-        // Construire la requête conditionnellement
         if (skill != null) {
             jpql.append(" AND s.name = :skill");
         }
@@ -43,7 +42,6 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 
         TypedQuery<Mentor> query = entityManager.createQuery(jpql.toString(), Mentor.class);
 
-        // Définir les paramètres seulement s'ils ne sont pas null
         if (skill != null) {
             query.setParameter("skill", skill);
         }
@@ -61,7 +59,6 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 
         List<Mentor> mentors = query.getResultList();
 
-        // Construire la requête de comptage de la même manière
         StringBuilder countJpql = new StringBuilder(
                 "SELECT COUNT(DISTINCT m) FROM Mentor m " +
                         "JOIN m.skills s " +

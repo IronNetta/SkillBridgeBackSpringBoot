@@ -27,7 +27,7 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public Page<Mentor> getAll(Pageable pageable) {
-        return mentorRepository.findAll(pageable);
+        return mentorRepository.findAllWithCreatedAt(pageable);
     }
 
     @Override

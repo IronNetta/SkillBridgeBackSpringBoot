@@ -20,36 +20,43 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     @Override
     public Page<Review> searchReviews(Long mentorId, Long studentId, Integer minRating, Integer maxRating, Pageable pageable) {
-        String base = """
-            FROM Review r
-            WHERE (:mentorId IS NULL OR r.mentor.id = :mentorId)
-              AND (:studentId IS NULL OR r.author.id = :studentId)
-              AND (:minRating IS NULL OR r.rating >= :minRating)
-              AND (:maxRating IS NULL OR r.rating <= :maxRating)
-        """;
+        StringBuilder jpqlBuilder = new StringBuilder("SELECT r FROM Review r");
+        StringBuilder countJpqlBuilder = new StringBuilder("SELECT COUNT(r) FROM Review r");
+        StringBuilder conditionsBuilder = new StringBuilder(" WHERE 1=1");
 
-        String jpql = "SELECT r " + base;
-        String countJpql = "SELECT COUNT(r) " + base;
+        if (mentorId != null) conditionsBuilder.append(" AND r.mentor.id = :mentorId");
+        if (studentId != null) conditionsBuilder.append(" AND r.author.id = :studentId");
+        if (minRating != null) conditionsBuilder.append(" AND r.rating >= :minRating");
+        if (maxRating != null) conditionsBuilder.append(" AND r.rating <= :maxRating");
+
+        String jpql = jpqlBuilder.append(conditionsBuilder).toString();
+        String countJpql = countJpqlBuilder.append(conditionsBuilder).toString();
 
         TypedQuery<Review> query = em.createQuery(jpql, Review.class);
         TypedQuery<Long> countQuery = em.createQuery(countJpql, Long.class);
 
-        query.setParameter("mentorId", mentorId);
-        query.setParameter("studentId", studentId);
-        query.setParameter("minRating", minRating);
-        query.setParameter("maxRating", maxRating);
+        if (mentorId != null) {
+            query.setParameter("mentorId", mentorId);
+            countQuery.setParameter("mentorId", mentorId);
+        }
+        if (studentId != null) {
+            query.setParameter("studentId", studentId);
+            countQuery.setParameter("studentId", studentId);
+        }
+        if (minRating != null) {
+            query.setParameter("minRating", minRating);
+            countQuery.setParameter("minRating", minRating);
+        }
+        if (maxRating != null) {
+            query.setParameter("maxRating", maxRating);
+            countQuery.setParameter("maxRating", maxRating);
+        }
 
-        countQuery.setParameter("mentorId", mentorId);
-        countQuery.setParameter("studentId", studentId);
-        countQuery.setParameter("minRating", minRating);
-        countQuery.setParameter("maxRating", maxRating);
+        if (pageable.isPaged()) {
+            query.setFirstResult((int) pageable.getOffset());
+            query.setMaxResults(pageable.getPageSize());
+        }
 
-        query.setFirstResult((int) pageable.getOffset());
-        query.setMaxResults(pageable.getPageSize());
-
-        List<Review> reviews = query.getResultList();
-        long total = countQuery.getSingleResult();
-
-        return new PageImpl<>(reviews, pageable, total);
+        return new PageImpl<>(query.getResultList(), pageable, countQuery.getSingleResult());
     }
 }

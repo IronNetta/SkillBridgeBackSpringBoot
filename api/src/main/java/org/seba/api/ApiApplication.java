@@ -7,16 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {
-		"org.seba.api",
-		"org.seba.bll.services",
-		"org.seba.dal.repositories",
-		"org.seba.il.utils.jwt",
-		"org.seba.il.filters",
-		"org.seba.il.configs"
-})
-@EnableJpaRepositories(basePackages = "org.seba.dal.repositories")
-@EntityScan(basePackages = "org.seba.dl.entities")
+@EntityScan("org.seba.dl.entities")
+@EnableJpaRepositories("org.seba.dal.repositories")
+@ComponentScan("org.seba")
 public class ApiApplication {
 
 	public static void main(String[] args) {

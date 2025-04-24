@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/mentors")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
 public class MentorController {
 
     private final MentorService mentorService;

@@ -30,50 +30,75 @@ public class DataInitializer {
         return args -> {
             if (userRepository.count() > 0) return;
 
+            // 📘 Compétences
             Skill java = skillRepository.save(new Skill("Java"));
             Skill spring = skillRepository.save(new Skill("Spring Boot"));
             Skill angular = skillRepository.save(new Skill("Angular"));
+            Skill docker = skillRepository.save(new Skill("Docker"));
+            Skill react = skillRepository.save(new Skill("React"));
 
-            Mentor mentor = new Mentor();
-            mentor.setUsername("mentor");
-            mentor.setEmail("mentor@skillbridge.com");
-            mentor.setPassword(passwordEncoder.encode("mentor123"));
-            mentor.setRole(UserRole.MENTOR);
-            mentor.setBio("Développeur fullstack senior");
-            mentor.setSkills(List.of(java, spring));
-            mentorRepository.save(mentor);
-
-            Student student = new Student();
-            student.setUsername("student");
-            student.setEmail("student@skillbridge.com");
-            student.setPassword(passwordEncoder.encode("student123"));
-            student.setRole(UserRole.STUDENT);
-            studentRepository.save(student);
-
+            // 👤 Admin
             User admin = new User("admin", "admin@skillbridge.com", passwordEncoder.encode("admin123"));
             admin.setRole(UserRole.ADMIN);
             userRepository.save(admin);
 
-            Availability a1 = new Availability();
-            a1.setMentor(mentor);
-            a1.setStartTime(LocalDateTime.now().plusDays(1).withHour(10));
-            a1.setEndTime(LocalDateTime.now().plusDays(1).withHour(11));
-            availabilityRepository.save(a1);
+            // 👨‍🏫 Mentors
+            for (int i = 1; i <= 3; i++) {
+                Mentor mentor = new Mentor();
+                mentor.setUsername("mentor" + i);
+                mentor.setEmail("mentor" + i + "@skillbridge.com");
+                mentor.setPassword(passwordEncoder.encode("mentor123"));
+                mentor.setRole(UserRole.MENTOR);
+                mentor.setBio("Mentor " + i + " - Expert en " + (i % 2 == 0 ? "Angular" : "Java/Spring"));
+                mentor.setSkills(List.of(java, spring, i % 2 == 0 ? angular : docker));
+                mentorRepository.save(mentor);
 
-            Session s = new Session();
-            s.setMentor(mentor);
-            s.setStudent(student);
-            s.setDate(LocalDateTime.now().plusDays(1).withHour(10).withMinute(30));
-            s.setStatus("PENDING");
-            sessionRepository.save(s);
+                // Disponibilités
+                for (int j = 0; j < 3; j++) {
+                    Availability availability = new Availability();
+                    availability.setMentor(mentor);
+                    availability.setStartTime(LocalDateTime.now().plusDays(j + 1).withHour(9));
+                    availability.setEndTime(LocalDateTime.now().plusDays(j + 1).withHour(10));
+                    availabilityRepository.save(availability);
+                }
+            }
 
-            Review r = new Review();
-            r.setMentor(mentor);
-            r.setAuthor(student);
-            r.setRating(5);
-            r.setComment("Super mentor !");
-            reviewRepository.save(r);
+            // 👩‍🎓 Étudiants
+            for (int i = 1; i <= 5; i++) {
+                Student student = new Student();
+                student.setUsername("student" + i);
+                student.setEmail("student" + i + "@skillbridge.com");
+                student.setPassword(passwordEncoder.encode("student123"));
+                student.setRole(UserRole.STUDENT);
+                studentRepository.save(student);
+            }
+
+            List<Mentor> allMentors = mentorRepository.findAll();
+            List<Student> allStudents = studentRepository.findAll();
+
+            // 📆 Sessions & 💬 Reviews
+            for (int i = 0; i < 10; i++) {
+                Mentor mentor = allMentors.get(i % allMentors.size());
+                Student student = allStudents.get(i % allStudents.size());
+
+                Session session = new Session();
+                session.setMentor(mentor);
+                session.setStudent(student);
+                session.setDate(LocalDateTime.now().plusDays(1 + i));
+                session.setStatus(i % 2 == 0 ? "CONFIRMED" : "PENDING");
+                sessionRepository.save(session);
+
+                if (i % 2 == 0) {
+                    Review review = new Review();
+                    review.setMentor(mentor);
+                    review.setAuthor(student);
+                    review.setRating(3 + (i % 3)); // 3 à 5
+                    review.setComment("Feedback de student" + student.getUsername());
+                    reviewRepository.save(review);
+                }
+            }
+
+            System.out.println("✅ Données de test insérées !");
         };
     }
 }
-
