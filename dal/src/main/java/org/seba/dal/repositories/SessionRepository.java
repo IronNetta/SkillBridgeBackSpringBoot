@@ -17,5 +17,6 @@ public interface SessionRepository extends JpaRepository<Session, Long>, Session
     List<Session> findByMentorIdAndDateAfter(Long mentorId, LocalDateTime date);
     Page<Session> findByStudentId(Long studentId, Pageable pageable);
     Page<Session> findByMentorId(Long mentorId, Pageable pageable);
+    boolean existsByMentorIdAndDateBetween(Long mentorId, LocalDateTime start, LocalDateTime end);
 }
 

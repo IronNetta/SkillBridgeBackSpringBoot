@@ -1,6 +1,8 @@
 package org.seba.bll.services.availability.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.seba.bll.services.availability.model.AvailabilityModel;
+import org.seba.dal.repositories.SessionRepository;
 import org.seba.dl.entities.Availability;
 import org.seba.dl.entities.Mentor;
 import org.seba.bll.exceptions.user.UserNotFoundException;
@@ -20,6 +22,7 @@ import java.util.List;
 public class AvailabilityServiceImpl implements AvailabilityService {
 
     private final AvailabilityRepository availabilityRepository;
+    private final SessionRepository sessionRepository;
     private final MentorRepository mentorRepository;
 
     @Override
@@ -29,8 +32,19 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
 
     @Override
-    public List<Availability> getByMentorId(Long mentorId) {
-        return availabilityRepository.findByMentorId(mentorId);
+    public List<AvailabilityModel> getByMentorId(Long mentorId) {
+        List<Availability> availabilities = availabilityRepository.findByMentorId(mentorId);
+
+        return availabilities.stream().map(a -> {
+            boolean isBooked = sessionRepository.existsByMentorIdAndDateBetween(
+                    mentorId,
+                    a.getStartTime(),
+                    a.getEndTime()
+            );
+            String status = isBooked ? "BOOKED" : "AVAILABLE";
+
+            return AvailabilityModel.fromEntity(a, status);
+        }).toList();
     }
 
     @Override

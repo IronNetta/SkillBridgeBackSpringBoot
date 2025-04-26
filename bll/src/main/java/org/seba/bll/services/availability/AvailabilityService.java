@@ -1,5 +1,6 @@
 package org.seba.bll.services.availability;
 
+import org.seba.bll.services.availability.model.AvailabilityModel;
 import org.seba.dl.entities.Availability;
 import org.seba.bll.services.availability.model.AvailabilityInput;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ public interface AvailabilityService {
 
     Availability getById(Long id);
 
-    List<Availability> getByMentorId(Long mentorId);
+    List<AvailabilityModel> getByMentorId(Long mentorId);
 
     Page<Availability> getByMentorId(Long mentorId, Pageable pageable);
 
